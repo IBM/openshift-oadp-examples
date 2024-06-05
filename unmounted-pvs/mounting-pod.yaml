@@ -1,0 +1,20 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: volume-mount-pod # Update to volume name to mount 
+  namespace: namespace-of-volume # Update to namespace the volume is in
+spec:
+  restartPolicy: Always
+  containers:
+    - name: volumes
+      command: [ "/bin/sh", "-c", "--" ]
+      args: [ "while true; do sleep 30; done;" ]
+      volumeMounts:
+        - name: volume-name # Update to volume name 
+          readOnly: true
+          mountPath: /mnt/volume-name # Update volume name
+      image: 'icr.io/codeengine/alpine:latest'
+  volumes:
+    - name: volume-name # Upate to volume name
+      persistentVolumeClaim:
+        claimName: persistent-volume-claim-name # Upate to persistent-volume-claim-name

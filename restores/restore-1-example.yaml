@@ -1,0 +1,18 @@
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: restore-1-example # Update to desired restore name 
+  namespace: openshift-adp
+spec:
+  backupName: backup-name # Update to backup name ... Example: dev-roks-cluster-full-filesystem 
+  includedNamespaces:
+    - namespace-1 # Update 
+    - namespace-2 # Update 
+  includedResources:
+    - project # Update
+    - secrets # Update 
+    - routes # Update 
+  itemOperationTimeout: 4h0m0s
+resourceModifier:
+  name: resource-modifier
+  kind: ConfigMap

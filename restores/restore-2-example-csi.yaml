@@ -1,0 +1,15 @@
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: restore-2-example-csi # Update to desired restore name 
+  namespace: openshift-adp
+spec:
+  backupName: backup-name # Update to backup name ... Example: dev-roks-cluster-full-filesystem
+  includedNamespaces:
+    - namespace-3 # Update 
+  includedResources:
+    - persistentvolume # Update 
+    - persistentvolumeclaim # Update 
+    - volumesnapshot # Update 
+  itemOperationTimeout: 0h20m0s
+  restorePVs: true

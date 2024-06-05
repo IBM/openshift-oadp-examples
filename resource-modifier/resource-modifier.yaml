@@ -1,0 +1,26 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: resource-modifier
+  namespace: openshift-adp
+data:
+  resource-modifier-map-hostnames.yaml: |
+    version: v1
+    resourceModifierRules:
+    - conditions:
+        groupResource: secrets
+        resourceNameRegex: "^secret-name-here$" 
+        namespaces:
+        - secret-namespace-here
+      strategicPatches:
+      - patchData: |
+          {"stringData": {"url": "updated-route-in-secret"}}
+    - conditions:
+        groupResource: routes.route.openshift.io
+        resourceNameRegex: "^route-name-here$"
+        namespaces:
+        - route-namespace-here
+      patches:
+      - operation: replace
+        path: "/spec/host"
+        value: "updated-url"

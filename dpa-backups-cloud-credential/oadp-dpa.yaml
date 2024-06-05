@@ -1,0 +1,41 @@
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: name-of-dpa # Update to desired DPA name ... Example: dev-roks-cluster-full
+  namespace: openshift-adp
+spec:
+  backupLocations:
+    - name: name-of-backup-location # Update to desired backup-location name ... Example: dev-roks-cluster-backup
+      velero:
+        config:
+          profile: default # This comes from the cloud-credentials. If you wish to update this name, you will also need to update in the cloud-credentials. It is recommended to leave as default
+          region: update-to-region-bucket-is-in # Region COS bucket is in... Example: us-south-1
+          s3ForcePathStyle: 'true'
+          s3Url: 's3-url-goes-here' # Update th s3 url from bucket ... Example: https://s3.us-south.cloud-object-storage.appdomain.cloud/
+        credential:
+          key: cloud
+          name: cloud-credentials
+        default: false
+        objectStorage:
+          bucket: bucket-name-goes-here # Update to bucket name ... Example: dev-roks-cluster-backup-bucket
+          prefix: prefix-to-distinguish-items-in-bucket # This prefix is useful if other items are already in bucket, it will add a prefix to backup items.... Example: velero-backup
+        provider: aws
+  configuration:
+    nodeAgent:
+      enable: true
+      uploaderType: kopia
+    velero:
+      defaultPlugins:
+        - openshift
+        - aws
+        - kubevirt
+        - csi
+  snapshotLocations:
+      velero:
+        config:
+          profile: default
+          region: update-to-region-bucket-is-in # Update to bucket region ... Example: us-south-1
+        credential:
+          key: cloud
+          name: cloud-credentials
+        provider: aws

@@ -1,0 +1,18 @@
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup-name-csi # Update to desired backup name ... Example: dev-roks-cluster-full-csi ... Location in DPA: spec.backupLocations[].name
+  namespace: openshift-adp
+  labels:
+    velero.io/storage-location: backup-location-name-from-dpa # Update to match DPA backup location name ... Example: dev-roks-cluster-backup
+spec:
+  volumeSnapshotLocations:
+    - dpa-name-1 # Update to DPA name, the 1 is added by OADP. To double check name is correct, look at the OADP operatort under all instance and find the volumeSnapshitLocation ... Example: dev-roks-cluster-full-1
+  excludedNamespaces:
+    - openshift-adp
+    - openshift-storage
+  defaultVolumesToFsBackup: false
+  snapshotVolumes: true
+  snapshotMoveData: false
+  storageLocation: backup-location-name-from-dpa # Update to match DPA backup location name ... Example: dev-roks-cluster-backup
+  ttl: 72000h0m0s
